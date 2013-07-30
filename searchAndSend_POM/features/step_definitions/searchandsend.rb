@@ -1,69 +1,61 @@
-# encoding: utf-8
-
 Given(/^I am on POS simulator page$/) do
-  visit(SearchKeyword::HomePage)
-  @load_value_yml = on(SearchKeyword::HomePage).loading_yml_file
+  visit(HomePage)
+  @load_value_yml = on(HomePage).loading_yml_file
 end
 
 When(/^I search for the "(.*?)"$/) do |search_term|
-  on(SearchKeyword::HomePage).enter_keyword(@load_value_yml, search_term)
+   on(HomePage).enter_keyword(@load_value_yml, search_term)
 end
 
-Then(/^I should see page title "(.*?)"$/) do |page_title|
-  on(Result::ResultSetPage).check_page_title(page_title)
+Then(/^I should see page title "(.*?)"$/) do |expected_title|
+  on(ResultSetPage).check_page_title(expected_title)
 end
 
-Then(/^I should see "(.*?)"$/) do |result_text|
-  on(Result::ResultSetPage).is_result_text(@load_value_yml, result_text)
-
+Then(/^I should see "(.*?)"$/) do |expected_message|
+  on(ResultSetPage).text.should include expected_message
+  # on(Result::ResultSetPage).is_result_text(@load_value_yml, result_text)
 end
 
-Then(/^I should see instructional text "(.*?)"$/) do |instructional_message|
-  on(Result::ResultSetPage).is_result_text(@load_value_yml, instructional_message)
+Then(/^I should see instructional text "(.*?)"$/) do |expected_message|
+  on(ResultSetPage).text.should include expected_message
+   # on(ResultSetPage).is_result_text(@load_value_yml, expected_message)
 end
 
 Then(/^I should see the T keys with following states:$/) do |table|
-    table.hashes.each do |tkeys|
-    on(Result::ResultSetPage).checktKey_no(tkeys['T key'], tkeys['Active'])
-    end
+  table.hashes.each do |tkeys|
+    on(ResultSetPage).checktKey_no(tkeys['T key'], tkeys['Active'])
+  end
 end
 
-When(/^I click on "(.*?)"$/) do |tkey|
-on(Result::ResultSetPage).click_tkey(@load_value_yml[tkey])
-end
+Then(/^I should be redirected to PDP page$/) do 
+  on(ProductDetailPage).text.should include 'Find Merchandise - Size/Color Options'
+end 
 
-Then(/^I should see list of filters listed$/) do
- sleep 4
+When(/^I click on "(.*?)"$/) do |arg1| 
+  on(ProductDetailPage).product_detail_view
+end 
+
+Then(/^I should see top left thumbnail selected by default$/) do 
   
-end
+end 
 
-Then(/^I should see first one as "(.*?)" with "(.*?)" outline and "(.*?)" background$/) do |arg1, arg2, arg3|
+When(/^I press the "(.*?)" arrow key "(.*?)" time$/) do |arg1, arg2| 
  
- 
-end
+end 
 
-When(/^I press the "(.*?)" arrow key "(.*?)" time$/) do |arg1, arg2|
- 
- 
-end
+Then(/^I should see selected thumbnail notated by a yellow background and red border in PDP page$/) do 
   
-Then(/^I should see second filter selected with "(.*?)" outline and "(.*?)" background$/) do |arg1, arg2|
+end 
 
+Then(/^I should see large picture at left matches the selected thumbnail at right$/) do 
+  
+end 
 
-end
+Then(/^I should see "(.*?)" Tkey inactive status$/) do |arg1| 
+  
+end 
 
-Then(/^I should move one level up with "(.*?)" outline and "(.*?)" background$/) do |arg1,arg2|
-
-
-end
-
-When(/^I should see the list of other filter categories with preceded by a radio button$/) do
-
-on(CategoryPage).verify_radio_button
-
-end
-
-When(/^I press "(.*?)"$/) do |arg1|
-
-
-end
+Then(/^I should see "(.*?)" Tkey active status$/) do |arg1| 
+  
+  
+end 
